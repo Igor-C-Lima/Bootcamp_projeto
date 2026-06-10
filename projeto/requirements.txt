@@ -3,3 +3,5 @@ ruff
 flask
 flask-cors
 requests
+supabase
+python-dotenv
