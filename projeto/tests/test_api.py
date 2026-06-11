@@ -11,7 +11,9 @@ def client():
 @patch("src.api.servidor.listar_itens")
 def test_get_estoque(mock_listar, client):
     # Simula o retorno do banco via função
-    mock_listar.return_value = {"AÇAI": {"quantidade": 10, "limite_minimo": 5, "status": "Ok"}}
+    mock_listar.return_value = (
+        {"AÇAI": {"quantidade": 10, "limite_minimo": 5, "status": "Ok"}}
+        )
     
     r = client.get("/api/estoque")
     
