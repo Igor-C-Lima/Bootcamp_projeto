@@ -11,6 +11,10 @@ on:
 jobs:
   testes:
     runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: "https://mock.supabase.co"
+      SUPABASE_KEY: "mock-key-supabase"
+      OPENWEATHER_KEY: "mock-key-openweather"
     defaults:
       run:
         working-directory: projeto
