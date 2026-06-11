@@ -6,7 +6,6 @@
 
 **[https://bootcamp-projeto.onrender.com](https://bootcamp-projeto.onrender.com)**
 
-
 ---
 
 ## Descrição do Problema
@@ -44,31 +43,35 @@ necessidade de conhecimento técnico.
 - Alertar quais produtos estão abaixo do limite mínimo e precisam de reposição
 - **Consultar o clima em tempo real** via integração com a API OpenWeather,
   com dica contextual sobre a demanda esperada por açaí
+- **Armazenamento em Nuvem:** Dados salvos de forma segura e persistente em um banco de dados relacional.
 
 ## Tecnologias Utilizadas
 
 - Python 3.13
 - Flask — servidor web e API REST
 - Flask-CORS — suporte a requisições cross-origin
+- **Supabase (PostgreSQL)** — banco de dados em nuvem (BaaS)
 - Requests — consumo da API OpenWeather
-- pytest — testes automatizados (unitários e de integração)
+- pytest — testes automatizados (unitários, integração e mocks)
 - ruff — análise estática e linting
 - GitHub Actions — integração contínua (CI)
-- Git — controle de versão
+- Git / GitHub — controle de versão e colaboração
 - Render — hospedagem em nuvem (deploy)
 
 ---
 
-## Integração com API Externa
+## Integrações Externas
 
+### API de Clima (OpenWeather)
 A aplicação consome a [API OpenWeather](https://openweathermap.org/api)
 para exibir as condições climáticas de qualquer cidade. Com base na
 temperatura retornada, o sistema sugere se é um bom momento para reforçar
 o estoque (dias quentes) ou ser mais conservador na reposição (dias frios).
 
-A chave da API fica armazenada exclusivamente no servidor — ela **nunca
-é exposta ao navegador ou ao código-fonte**, garantindo segurança tanto
-no ambiente local quanto no deploy em produção.
+### Banco de Dados (Supabase)
+O sistema utiliza o **Supabase** (baseado em PostgreSQL) para garantir a persistência dos dados em nuvem, permitindo que as informações do estoque sejam acessadas de qualquer lugar com consistência e segurança.
+
+*As chaves de API e credenciais do banco ficam armazenadas exclusivamente no servidor — elas **nunca são expostas ao navegador ou ao código-fonte**, garantindo segurança tanto no ambiente local quanto no deploy em produção.*
 
 ---
 
@@ -78,89 +81,14 @@ no ambiente local quanto no deploy em produção.
 
 - Python 3.13+
 - Uma chave de API gratuita do [OpenWeather](https://openweathermap.org/api)
+- Um projeto criado no [Supabase](https://supabase.com/) com a tabela `produto` (colunas: nome, quantidade, limite_minimo, status)
 
 ### Instalação
 
 ```bash
 # Clonar o repositório
-git clone https://github.com/Igor-C-Lima/Bootcamp_projeto.git
+git clone [https://github.com/Igor-C-Lima/Bootcamp_projeto.git](https://github.com/Igor-C-Lima/Bootcamp_projeto.git)
 cd Bootcamp_projeto/projeto
 
 # Instalar dependências
 pip install -r requirements.txt
-```
-
-### Configurar a chave da API
-
-A key deve ser definida como variável de ambiente **antes** de subir o
-servidor. Ela não deve ser colocada no código.
-
-**Windows (PowerShell):**
-```powershell
-$env:OPENWEATHER_KEY="sua_chave_aqui"
-```
-
-**Windows (CMD):**
-```cmd
-set OPENWEATHER_KEY=sua_chave_aqui
-```
-
-**Mac/Linux:**
-```bash
-export OPENWEATHER_KEY="sua_chave_aqui"
-```
-
-### Subir o servidor
-
-```bash
-python -m src.api.servidor
-```
-
-Acesse em: **http://localhost:5000**
-
-
-### Testes
-
-```bash
-pytest tests/ -v
-```
-
-### Lint
-
-```bash
-ruff check .
-```
-
----
-
-## Estrutura do Projeto
-
-```
-projeto/
-├── src/
-│   ├── api/
-│   │   └── servidor.py        # Servidor Flask + proxy OpenWeather
-│   ├── cli/
-│   │   └── cli.py             # Interface de linha de comando
-│   ├── estoque/
-│   │   └── funcoes.py         # Lógica de negócio do estoque
-│   └── storage/
-│       └── estoque_armazenamento.py  # Leitura e escrita do JSON
-├── tests/
-│   ├── test_estoque.py        # Testes unitários
-│   └── test_integracao_clima.py  # Testes de integração (OpenWeather)
-├── data/
-│   └── estoque.json           # Dados persistidos
-├── estoque.html               # Interface web
-└── requirements.txt
-```
-
----
-
-## Informações
-
-**Versão:** 2.0.0
-
-**Autor:** Igor Christofidis de Lima — [github.com/Igor-C-Lima](https://github.com/Igor-C-Lima)
-
-**Repositório:** [github.com/Igor-C-Lima/Bootcamp_projeto](https://github.com/Igor-C-Lima/Bootcamp_projeto)
