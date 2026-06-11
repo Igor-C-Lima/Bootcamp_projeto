@@ -46,7 +46,11 @@ def atualizar_quantidade(nome_produto: str, nova_quantidade: int, limite_minimo:
         "status": status_calculado
     }
 #Atualiza a linha onde a coluna 'nome' for igual ao nome_produto
-    resposta = supabase.table("produto").update(dados_atualizados).eq("nome", nome_produto).execute()
+    resposta = (
+        supabase.table("produto")
+        .update(dados_atualizados)
+        .eq("nome", nome_produto)
+        .execute())
     return resposta.data
 
 def remover_item(nome_produto: str):
