@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch, MagicMock
 from src.storage.estoque_armazenamento import (
     listar_itens,
@@ -17,7 +16,10 @@ def test_listar_itens(mock_supabase):
         {"nome": "COPO", "quantidade": 2, "limite_minimo": 10, "status": "Repor"}
     ]
     # Simulando a cadeia de chamadas: supabase.table().select().execute()
-    mock_supabase.table.return_value.select.return_value.execute.return_value = mock_response
+    (mock_supabase
+     .table.return_value
+     .select.return_value
+     .execute.return_value) = mock_response
 
     resultado = listar_itens()
 
@@ -32,12 +34,21 @@ def test_listar_itens(mock_supabase):
 @patch("src.storage.estoque_armazenamento.supabase")
 def test_adicionar_item(mock_supabase):
     mock_response = MagicMock()
-    mock_response.data = [{"nome": "MORANGO", "quantidade": 100, "limite_minimo": 20, "status": "Ok"}]
-    mock_supabase.table.return_value.insert.return_value.execute.return_value = mock_response
+    mock_response.data = [
+        {"nome": "MORANGO", 
+         "quantidade": 100, 
+         "limite_minimo": 20, 
+         "status": "Ok"}
+        ]
+    (mock_supabase
+     .table.return_value
+     .insert.return_value
+     .execute.return_value) = mock_response
 
     resultado = adicionar_item("MORANGO", 100, 20)
 
-    # Verifica se o método de inserção foi chamado com os dados corretos e cálculo de status
+    # Verifica se o método de inserção foi chamado 
+    # com os dados corretos e cálculo de status
     mock_supabase.table.return_value.insert.assert_called_once_with({
         "nome": "MORANGO",
         "quantidade": 100,
@@ -50,7 +61,12 @@ def test_adicionar_item(mock_supabase):
 @patch("src.storage.estoque_armazenamento.supabase")
 def test_atualizar_quantidade(mock_supabase):
     mock_response = MagicMock()
-    mock_response.data = [{"nome": "AÇAI", "quantidade": 4, "limite_minimo": 5, "status": "Repor"}]
+    mock_response.data = [
+        {"nome": "AÇAI", 
+         "quantidade": 4, 
+         "limite_minimo": 5, 
+         "status": "Repor"}
+        ]
     
     # Simulando: supabase.table().update().eq().execute()
     mock_table = mock_supabase.table.return_value
@@ -60,7 +76,8 @@ def test_atualizar_quantidade(mock_supabase):
 
     resultado = atualizar_quantidade("AÇAI", 4, 5)
 
-    # Verifica se atualizou os dados corretos e recalculou o status (4 é menor que o limite 5 -> Repor)
+    # Verifica se atualizou os dados corretos e recalculou o status 
+    # (4 é menor que o limite 5 -> Repor)
     mock_table.update.assert_called_once_with({
         "quantidade": 4,
         "status": "Repor"
