@@ -39,11 +39,16 @@ def post_cadastrar():
     # Verifica se já existe usando os dados da nuvem
     estoque_atual = listar_itens()
     if nome in estoque_atual:
-         return jsonify({"ok": False, "mensagem": "Produto já cadastrado."}), 400
+        return jsonify(
+            {"ok": False, "mensagem": "Produto já cadastrado."}
+            ), 400
 
     try:
-        adicionar_item(nome, int(dados["quantidade"]), int(dados["limite_minimo"]))
-        return jsonify({"ok": True, "mensagem": "Produto cadastrado com sucesso."}), 201
+        adicionar_item(nome, int(dados["quantidade"]),
+                    int(dados["limite_minimo"]))
+        return jsonify(
+            {"ok": True, "mensagem": "Produto cadastrado com sucesso."}
+            ), 201
     except Exception as e:
         return jsonify({"ok": False, "mensagem": str(e)}), 400
 
@@ -55,8 +60,8 @@ def patch_atualizar(nome):
     estoque_atual = listar_itens()
     
     if nome not in estoque_atual:
-         return jsonify({"ok": False, "mensagem": 
-             "Produto não encontrado."}), 404
+        return jsonify({"ok": False, "mensagem": 
+            "Produto não encontrado."}), 404
 
     valor = int(dados["valor"])
     operacao = dados["operacao"].upper()
@@ -70,16 +75,23 @@ def patch_atualizar(nome):
         nova_qtd = qtd_atual - valor
         if nova_qtd < 0:
             return jsonify(
-                {"ok": False, "mensagem": "Quantidade final não pode ser negativa."}
+                {"ok": False, 
+                "mensagem": "Quantidade final não pode ser negativa."}
                 ), 400
     else:
-        return jsonify({"ok": False, "mensagem": "Operação inválida."}), 400
+        return jsonify(
+            {"ok": False, "mensagem": "Operação inválida."}
+            ), 400
 
     try:
         atualizar_quantidade(nome, nova_qtd, limite)
-        return jsonify({"ok": True, "mensagem": "Quantidade atualizada."})
+        return jsonify(
+            {"ok": True, "mensagem": "Quantidade atualizada."}
+            )
     except Exception as e:
-        return jsonify({"ok": False, "mensagem": str(e)}), 400
+        return jsonify(
+            {"ok": False, "mensagem": str(e)}
+            ), 400
 
 @app.delete("/api/estoque/<nome>")
 def delete_produto(nome):
@@ -87,9 +99,13 @@ def delete_produto(nome):
     nome = nome.upper()
     try:
         remover_item(nome)
-        return jsonify({"ok": True, "mensagem": "Produto removido."})
+        return jsonify(
+            {"ok": True, "mensagem": "Produto removido."}
+            )
     except Exception as e:
-        return jsonify({"ok": False, "mensagem": str(e)}), 404
+        return jsonify(
+            {"ok": False, "mensagem": str(e)}
+            ), 404
 
 @app.get("/api/estoque/alertas")
 def get_alertas():
@@ -101,11 +117,15 @@ def get_alertas():
 def get_clima():
     cidade = request.args.get("cidade", "").strip()
     if not cidade:
-        return jsonify({"erro": "Parâmetro 'cidade' é obrigatório."}), 400
+        return jsonify(
+            {"erro": "Parâmetro 'cidade' é obrigatório."}
+            ), 400
 
     api_key = os.environ.get("OPENWEATHER_KEY")
     if not api_key:
-        return jsonify({"erro": "OPENWEATHER_KEY não configurada no servidor."}), 500
+        return jsonify(
+            {"erro": "OPENWEATHER_KEY não configurada no servidor."}
+            ), 500
 
     try:
         resp = requests.get(

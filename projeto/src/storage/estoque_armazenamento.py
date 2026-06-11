@@ -12,7 +12,8 @@ def listar_itens():
     """Busca da nuvem e converte para o formato JSON original esperado pela API."""
     resposta = supabase.table("produto").select("*").execute()
 
-#Recria a estrutura original do JSON: {"NOME": {"quantidade": X, "limite_minimo": Y}}
+#Recria a estrutura original do JSON: 
+# {"NOME": {"quantidade": X, "limite_minimo": Y}}
     estoque_legado = {}
     for item in resposta.data:
         estoque_legado[item["nome"]] = {
