@@ -68,7 +68,10 @@ def patch_atualizar(nome):
     elif operacao == "DIMINUIR":
         nova_qtd = qtd_atual - valor
         if nova_qtd < 0:
-            return jsonify({"ok": False, "mensagem": "Quantidade final não pode ser negativa."}), 400
+            return jsonify(
+                {"ok": False, "mensagem": 
+                    "Quantidade final não pode ser negativa."}
+                ), 400
     else:
         return jsonify({"ok": False, "mensagem": "Operação inválida."}), 400
 
