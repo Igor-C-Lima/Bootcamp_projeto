@@ -18,8 +18,7 @@ def test_listar_itens(mock_supabase):
     # Simulando a cadeia de chamadas: supabase.table().select().execute()
     (mock_supabase
      .table.return_value
-     .select.return_value
-     .execute.return_value) = mock_response
+     .select.return_value.execute.return_value) = mock_response
 
     resultado = listar_itens()
 
